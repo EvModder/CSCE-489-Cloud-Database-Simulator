@@ -10,7 +10,7 @@ public class CommandConfig extends Command{
 			System.err.println("Invalid number of arguments!");
 			return false;
 		}
-		String select = args[0].toLowerCase();
+		String select = args[0].toLowerCase().replaceAll("--", "");
 		if(select.equals("hardware")){
 			return loadHardware(args[1]);
 		}
@@ -28,7 +28,7 @@ public class CommandConfig extends Command{
 	
 	boolean loadHardware(String filename){
 		String file = FileIO.loadFile(filename, "");
-		if(file == null){
+		if(file == ""){
 			System.err.println("File not found");
 			return false;
 		}
@@ -39,6 +39,7 @@ public class CommandConfig extends Command{
 		
 		String[] lines = file.split("\n");
 		for(i=1; i<lines.length; ++i){
+			if(lines[i].isEmpty()) continue;
 			String[] data = lines[i].split(" ");
 			if(data.length != 5){
 				System.err.println("Invalid data (invalid args) for Machine #"+i);
@@ -57,7 +58,7 @@ public class CommandConfig extends Command{
 	
 	boolean loadImages(String filename){
 		String file = FileIO.loadFile(filename, "");
-		if(file == null){
+		if(file == ""){
 			System.err.println("File not found");
 			return false;
 		}
@@ -68,6 +69,7 @@ public class CommandConfig extends Command{
 		
 		String[] lines = file.split("\n");
 		for(i=1; i<lines.length; ++i){
+			if(lines[i].isEmpty()) continue;
 			String[] data = lines[i].split(" ");
 			if(data.length != 2){
 				System.err.println("Invalid data (invalid args) for Image #"+i);
@@ -82,7 +84,7 @@ public class CommandConfig extends Command{
 	
 	boolean loadFlavors(String filename){
 		String file = FileIO.loadFile(filename, "");
-		if(file == null){
+		if(file == ""){
 			System.err.println("File not found");
 			return false;
 		}
@@ -91,6 +93,7 @@ public class CommandConfig extends Command{
 		
 		String[] lines = file.split("\n");
 		for(i=1; i<lines.length; ++i){
+			if(lines[i].isEmpty()) continue;
 			String[] data = lines[i].split(" ");
 			if(data.length != 4){
 				System.err.println("Invalid data (invalid args) for Flavor #"+i);

@@ -16,8 +16,17 @@ public class CommandAdmin extends Command{
 				System.err.println("Invalid number of arguments!");
 				return false;
 			}
-			String machineName = args[1], flavorName = args[2];
-			
+			Machine machine = stack.getMachine(args[1]);
+			Flavor flavor = stack.getFlavor(args[2]);
+			if(machine == null){
+				System.err.println("Invalid machine specified: "+args[1]);
+				return false;
+			}
+			if(flavor == null){
+				System.err.println("Invalid flavor specified: "+args[2]);
+				return false;
+			}
+			System.out.println(machine.canHost(flavor) ? "yes" : "no");
 		}
 		else if(args[0].equals("show")){
 			args[1] = args[1].toLowerCase();
@@ -37,6 +46,13 @@ public class CommandAdmin extends Command{
 	}
 	
 	void showAvailableHardware(){
+		StringBuilder builder = new StringBuilder(" -- Machines (Available):\n");
+		builder.append(stack.machines.size()).append('\n');
 		
+		for(Machine m : stack.machines.values()){
+			builder.append(m.name).append(' ').append(m.ip).append(' ').append(m.memory).append(' ')
+						.append(m.disks).append(' ').append(m.vcpus).append('\n');
+		}
+		System.out.print(builder.toString());
 	}
 }

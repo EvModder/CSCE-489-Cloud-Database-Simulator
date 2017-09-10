@@ -39,10 +39,12 @@ public class AggieStack{
 				
 				String log = cmdName+" >> "+(result ? "SUCCESS" : "FAILURE")+'\n';
 				FileIO.appendString("aggiestack-log.txt", log);
+//				if(!result) System.err.println("Failure while executing command");
 			}
 			else{
 				String log = cmdName+" >> INVALID\n";
 				FileIO.appendString("aggiestack-log.txt", log);
+				System.err.println("Invalid command");
 			}
 		}
 		scanner.close();

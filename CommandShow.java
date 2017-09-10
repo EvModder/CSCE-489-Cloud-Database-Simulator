@@ -26,7 +26,7 @@ public class CommandShow extends Command{
 		StringBuilder builder = new StringBuilder(" -- Machines:\n");
 		builder.append(stack.machines.size()).append('\n');
 		
-		for(Machine m : stack.machines){
+		for(Machine m : stack.machines.values()){
 			builder.append(m.name).append(' ').append(m.ip).append(' ').append(m.TOTAL_MEMORY).append(' ')
 						.append(m.TOTAL_DISKS).append(' ').append(m.TOTAL_VCPUS).append('\n');
 		}
@@ -45,7 +45,7 @@ public class CommandShow extends Command{
 		StringBuilder builder = new StringBuilder(" -- Flavors:\n");
 		builder.append(stack.flavors.size()).append('\n');
 		
-		for(Flavor flavor : stack.flavors){
+		for(Flavor flavor : stack.flavors.values()){
 			builder.append(flavor.name).append(' ').append(flavor.ram).append(' ')
 						.append(flavor.disks).append(' ').append(flavor.vcpus).append('\n');
 		}

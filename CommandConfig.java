@@ -1,8 +1,10 @@
 public class CommandConfig extends Command{
 	private AggieStack stack;
+	private IPAddressValidator ipValidator;
 	
 	CommandConfig(){
 		stack = AggieStack.getInstance();
+		ipValidator = new IPAddressValidator();
 	}
 
 	@Override public boolean runCommand(String... args){
@@ -43,6 +45,9 @@ public class CommandConfig extends Command{
 			String[] data = lines[i].split(" ");
 			if(data.length != 5){
 				System.err.println("Invalid data (invalid args) for Machine #"+i);
+			}
+			else if(!ipValidator.validate(data[1])){
+				System.err.println("Invalid data (IP format) for Machine #"+i);
 			}
 			else try{
 				//name = data[0]; ip = data[1]; mem = data[2]; disks = data[3]; vcpus = data[4]

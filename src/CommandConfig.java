@@ -27,7 +27,7 @@ public class CommandConfig extends Command{
 			return false;
 		}
 	}
-	
+
 	boolean loadHardware(String filename){
 		String file = FileIO.loadFile(filename, "");
 		if(file == ""){
@@ -36,9 +36,9 @@ public class CommandConfig extends Command{
 		}
 		int i = file.indexOf('\n');
 		if(i == -1) return true; //0 machines
-		
+
 //		int num = Integer.parseInt(file.substring(0, i));
-		
+
 		String[] lines = file.split("\n");
 		for(i=1; i<lines.length; ++i){
 			if(lines[i].isEmpty()) continue;

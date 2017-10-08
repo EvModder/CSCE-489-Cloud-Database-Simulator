@@ -1,0 +1,13 @@
+Sequence of operations:
+
+User 1:
+read
+select health_quotes
+read
+
+User 2:
+select health_quotes
+listen
+
+User 1:
+write "The pain you feel today, will be the strength you feel tomorrow"

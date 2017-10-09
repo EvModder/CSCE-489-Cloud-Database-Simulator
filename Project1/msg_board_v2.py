@@ -11,14 +11,13 @@ HOST_URL = "mongodb://" + HOST_IP + "/" + DB_NAME
 MONGO_CLIENT = pymongo.MongoClient(HOST_URL)
 MONGO_DB = MONGO_CLIENT[DB_NAME]
 
+# Get messageboard by name from database
 def getCollection(name):
     collection = MONGO_DB[name]
     return collection
 
-
-#health_quotes, fit_chat, stories, memes
+# Get user input (used in separate thread to prevent halting)
 user_input = [None]
-
 def get_user_input(ref):
     ref[0] = raw_input("listening...\n").lower()
 

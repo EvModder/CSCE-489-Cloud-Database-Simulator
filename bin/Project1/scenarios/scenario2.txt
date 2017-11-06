@@ -1,0 +1,32 @@
+User 1:
+select fit_chat
+listen
+
+User 3:
+select fit_chat
+listen
+
+User 2:
+select fit_chat
+write "I achieved my goal today!"
+listen
+
+User 3:
+stop
+write: "Me too!"
+listen
+
+User 2:
+stop
+write "That's great! I need to keep up for two more days to complete my weekly goal."
+listen
+
+User 3:
+stop
+write "Keep it up."
+listen
+
+User 1:
+stop
+write "Good job both of you."
+listen

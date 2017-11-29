@@ -1,0 +1,24 @@
+WQ1:
+mongoimport --host 34.233.78.56 --db fitness_424003778 --collection fitness_424003778 --file ~/Downloads/dummy-fitness.json —jsonArray
+
+WQ2:
+db.fitness_424003778.insert({
+  "uid": 1001,"height": "5ft10in",
+  "weight": "180lbs",
+  "tags": ["ambitious"]
+});RQ1: (in queries.py)
+pprint.pprint(collection.find().count())RQ2: (in queries.py)
+active_employees = collection.find({"tags": "active"})RQ3: (in queries.py)
+gt_60_regex = "([7-9]\d)|(6[1-9])|\d{3,}"
+goal_dur_gt_60 = collection.find({"goal.activityGoal": {"$regex": gt_60_regex}})
+RQ4: (in queries.py)collection.aggregate([
+    { '$unwind': '$activityDuration' }, 
+    { '$group': { 
+        '_id': '$uid', 
+        'total_dur': { '$sum': '$activityDuration' }
+    }}
+])Other commands I used:
+db.help()
+use fitness_424003778
+show collections
+db.collections.help()

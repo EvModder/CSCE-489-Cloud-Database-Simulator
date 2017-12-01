@@ -2,7 +2,7 @@ public class CommandShow extends Command{
 	private AggieStack stack;
 	
 	CommandShow(){
-		stack = AggieStack.getInstance();
+		stack = AggieStack.getHook();
 	}
 
 	@Override public boolean runCommand(String... args){
@@ -36,7 +36,7 @@ public class CommandShow extends Command{
 		StringBuilder builder = new StringBuilder(" -- Images:\n");
 		builder.append(stack.images.size()).append('\n');
 		
-		for(Image img : stack.images){
+		for(Image img : stack.images.values()){
 			builder.append(img.name).append(' ').append(img.path).append('\n');
 		}
 		System.out.print(builder.toString());

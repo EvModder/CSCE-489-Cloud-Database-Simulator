@@ -1,8 +1,8 @@
 
 public class Machine{
 	String name, ip;
-	long memory, disks, vcpus;
-	final long TOTAL_MEMORY, TOTAL_DISKS, TOTAL_VCPUS;
+	long memory, disks, vcpus;//available
+	final long TOTAL_MEMORY, TOTAL_DISKS, TOTAL_VCPUS;//supported
 	
 	Machine(String name, String ip, long mem, long disks, long vcpus){
 		this.name = name;

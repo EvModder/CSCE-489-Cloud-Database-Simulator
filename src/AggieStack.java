@@ -1,19 +1,20 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class AggieStack{
 	public static void main(String... args){new AggieStack();}
-	private static AggieStack instance;
-	public static AggieStack getInstance(){return instance;}
+	private static AggieStack hook;
+	public static AggieStack getHook(){return hook;}
 	protected HashMap<String, Machine> machines = new HashMap<String, Machine>();
-	protected ArrayList<Image> images = new ArrayList<Image>();
+	protected HashMap<String, Image> images = new HashMap<String, Image>();
 	protected HashMap<String, Flavor> flavors = new HashMap<String, Flavor>();
+	protected HashMap<String, Instance> instances = new HashMap<String, Instance>();
 
 	public AggieStack(){
-		instance = this;
+		hook = this;
 		new CommandAdmin();
 		new CommandConfig();
+		new CommandServer();
 		new CommandShow();
 		Scanner scanner = new Scanner(System.in);
 
@@ -57,12 +58,31 @@ public class AggieStack{
 		return machines.get(name.toLowerCase());
 	}
 	void addImage(Image image){
-		images.add(image);
+		images.put(image.name.toLowerCase(), image);
+	}
+	Image getImage(String name) {
+		return images.get(name.toLowerCase());
 	}
 	void addFlavor(Flavor flavor){
 		flavors.put(flavor.name.toLowerCase(), flavor);
 	}
 	Flavor getFlavor(String name){
 		return flavors.get(name.toLowerCase());
+	}
+	void addInstance(Instance instance){
+		instances.put(instance.name.toLowerCase(), instance);
+	}
+	Instance getInstance(String name){
+		return instances.get(name.toLowerCase());
+	}
+
+	public boolean findHost(Instance instance){
+		for(Machine machine : machines.values()) {
+			if(machine.canHost(instance.flavor)) {
+				instance.setHost(machine);
+				return true;
+			}
+		}
+		return false;
 	}
 }

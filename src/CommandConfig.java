@@ -3,7 +3,7 @@ public class CommandConfig extends Command{
 	private IPAddressValidator ipValidator;
 	
 	CommandConfig(){
-		stack = AggieStack.getInstance();
+		stack = AggieStack.getHook();
 		ipValidator = new IPAddressValidator();
 	}
 

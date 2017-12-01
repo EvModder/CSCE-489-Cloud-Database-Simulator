@@ -2,7 +2,7 @@ public class CommandAdmin extends Command{
 	private AggieStack stack;
 	
 	CommandAdmin(){
-		stack = AggieStack.getInstance();
+		stack = AggieStack.getHook();
 	}
 
 	@Override public boolean runCommand(String... args){

@@ -100,13 +100,13 @@ public class CommandConfig extends Command{
 		for(i=1; i<lines.length; ++i){
 			if(lines[i].isEmpty()) continue;
 			String[] data = lines[i].split(" ");
-			if(data.length != 2){
+			if(data.length != 3){
 				System.err.println("Invalid data (invalid args) for Image at line "+i+": "
 							+(data.length > 0 ? data[0] : "null"));
 			}
 			else{
-				//name = data[0]; path = data[1];
-				stack.addImage(new Image(data[0], data[1]));
+				//name = data[0]; filesize = data[1]; path = data[2];
+				stack.addImage(new Image(data[0], Long.parseLong(data[1]), data[2]));
 			}
 		}
 		return true;

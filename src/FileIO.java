@@ -12,9 +12,9 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class FileIO {
+public class FileIO{
 	public static final String DIR = "./";
-	public static String loadFile(String filename, InputStream defaultValue) {
+	public static String loadFile(String filename, InputStream defaultValue){
 		BufferedReader reader = null;
 		try{reader = new BufferedReader(new FileReader(DIR+filename));}
 		catch(FileNotFoundException e){
@@ -67,7 +67,7 @@ public class FileIO {
 		return file.toString();
 	}
 
-	public static String loadFile(String filename, String defaultContent) {
+	public static String loadFile(String filename, String defaultContent){
 		BufferedReader reader = null;
 		try{reader = new BufferedReader(new FileReader(DIR+filename));}
 		catch(FileNotFoundException e){
@@ -108,7 +108,7 @@ public class FileIO {
 		return file.toString();
 	}
 
-	public static boolean saveFile(String filename, String content) {
+	public static boolean saveFile(String filename, String content){
 		try{
 			BufferedWriter writer = new BufferedWriter(new FileWriter(DIR+filename));
 			writer.write(content); writer.close();
@@ -148,8 +148,7 @@ public class FileIO {
 				return saveFile(filename, content);
 			}
 			else return false;
-		}
-		catch(IOException e){
+		}catch(IOException e){
 			return false;
 		}
 	}

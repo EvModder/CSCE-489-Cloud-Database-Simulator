@@ -107,8 +107,7 @@ public class CommandConfig extends Command{
 				//name = data[0]; RAM = data[1]; disks = data[2]; vcpus = data[3]
 				stack.addFlavor(new Flavor(data[0], Integer.parseInt(data[1]), 
 							Integer.parseInt(data[2]), Integer.parseInt(data[3])));
-			}
-			catch(NumberFormatException ex){
+			}catch(NumberFormatException ex){
 				System.err.println("Invalid data (number format) for Flavor #"+i);
 			}
 		}

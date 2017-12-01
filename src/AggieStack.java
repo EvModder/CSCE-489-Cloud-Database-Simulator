@@ -60,7 +60,7 @@ public class AggieStack{
 	void addImage(Image image){
 		images.put(image.name.toLowerCase(), image);
 	}
-	Image getImage(String name) {
+	Image getImage(String name){
 		return images.get(name.toLowerCase());
 	}
 	void addFlavor(Flavor flavor){
@@ -78,7 +78,7 @@ public class AggieStack{
 
 	public boolean findHost(Instance instance){
 		for(Machine machine : machines.values()) {
-			if(machine.canHost(instance.flavor)) {
+			if(machine.canHost(instance.flavor)){
 				instance.setHost(machine);
 				return true;
 			}

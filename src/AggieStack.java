@@ -9,6 +9,7 @@ public class AggieStack{
 	protected HashMap<String, Image> images = new HashMap<String, Image>();
 	protected HashMap<String, Flavor> flavors = new HashMap<String, Flavor>();
 	protected HashMap<String, Instance> instances = new HashMap<String, Instance>();
+	protected HashMap<String, Rack> racks = new HashMap<String, Rack>();
 
 	public AggieStack(){
 		hook = this;
@@ -74,6 +75,12 @@ public class AggieStack{
 	}
 	Instance getInstance(String name){
 		return instances.get(name.toLowerCase());
+	}
+	void addRack(Rack rack){
+		racks.put(rack.name, rack);
+	}
+	Rack getRack(String name){
+		return racks.get(name.toLowerCase());
 	}
 
 	public boolean findHost(Instance instance){

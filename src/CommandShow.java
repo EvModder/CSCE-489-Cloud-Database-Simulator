@@ -27,8 +27,9 @@ public class CommandShow extends Command{
 		builder.append(stack.machines.size()).append('\n');
 		
 		for(Machine m : stack.machines.values()){
-			builder.append(m.name).append(' ').append(m.ip).append(' ').append(m.TOTAL_MEMORY).append(' ')
-						.append(m.TOTAL_DISKS).append(' ').append(m.TOTAL_VCPUS).append('\n');
+			builder.append(m.name).append(' ').append(m.rack.name).append(' ').append(m.ip).append(' ')
+						.append(m.TOTAL_MEMORY).append(' ').append(m.TOTAL_DISKS).append(' ')
+						.append(m.TOTAL_VCPUS).append('\n');
 		}
 		System.out.print(builder.toString());
 	}

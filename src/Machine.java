@@ -1,10 +1,12 @@
 public class Machine{
 	String name, ip;
+	Rack rack;
 	long memory, disks, vcpus;// available
 	final long TOTAL_MEMORY, TOTAL_DISKS, TOTAL_VCPUS;// supported
 
-	Machine(String name, String ip, long mem, long disks, long vcpus){
+	Machine(String name, Rack rack, String ip, long mem, long disks, long vcpus){
 		this.name = name;
+		this.rack = rack;
 		this.ip = ip;
 		TOTAL_MEMORY = memory = mem; // memory = amount of RAM in GB
 		TOTAL_DISKS = this.disks = disks;

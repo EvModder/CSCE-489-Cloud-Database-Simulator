@@ -49,20 +49,21 @@ public class CommandServer extends Command{
 			Image image = stack.getImage(imgName);
 			Flavor flavor = stack.getFlavor(flvName);
 			if(image == null){
-				System.err.println("Invalid image specified: " + imgName);
+				System.err.println("Invalid image specified: "+imgName);
 				return false;
 			}
 			if(flavor == null){
-				System.err.println("Invalid flavor specified: " + flvName);
+				System.err.println("Invalid flavor specified: "+flvName);
 				return false;
 			}
 			// create the machine with instName, image, & flavor
 			Instance instance = new Instance(instName, image, flavor);
 			if(stack.findHost(instance)){
-				System.out.println("Located host machine for " + instName + ", instance installed successfully");
+//				System.out.println("Located host machine for "+instName);// Just SUCCESS in log
 			}
 			else{
 				System.err.println("Unable to find a host for the specified instance");
+				return false;
 			}
 		}
 		else if(args[0].equals("delete")){
@@ -72,12 +73,12 @@ public class CommandServer extends Command{
 			}
 			Instance instance = stack.instances.remove(args[1]);
 			if(instance == null){
-				System.err.println("No such instance found: " + args[1]);
+				System.err.println("No such instance found: "+args[1]);
 				return false;
 			}
 			// Free resources from current host
 			instance.setHost(null);
-			System.out.println("Instance has been deleted");
+//			System.out.println("Instance has been deleted");// Just SUCCESS in log
 		}
 		else{
 			System.err.println("Invalid arguments");

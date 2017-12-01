@@ -26,14 +26,9 @@ public class AggieStack{
 			}
 			if(input.equals("exit") || input.equals("quit")) break;
 			
-			String cmdName = input;
-			String[] args = new String[]{};
-
 			int i = input.indexOf(" ");
-			if(i != -1){
-				cmdName = input.substring(0, i);
-				args = input.substring(i+1).split(" ");
-			}
+			String cmdName = i == -1 ? input : input.substring(0, i);
+			String[] args = i == -1 ? new String[]{} : input.substring(i+1).split(" ");
 
 			Command cmd = Command.getCommand(cmdName);
 			if(cmd != null){
@@ -41,7 +36,6 @@ public class AggieStack{
 				
 				String log = cmdName+" >> "+(result ? "SUCCESS" : "FAILURE")+'\n';
 				FileIO.appendString("aggiestack-log.txt", log);
-//				if(!result) System.err.println("Failure while executing command");
 			}
 			else{
 				String log = cmdName+" >> INVALID\n";

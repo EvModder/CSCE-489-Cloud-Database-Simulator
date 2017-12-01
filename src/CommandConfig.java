@@ -35,9 +35,8 @@ public class CommandConfig extends Command{
 			return false;
 		}
 		int i = file.indexOf('\n');
-		if(i == -1) return true; //0 machines
+		if(i == -1) return true; //0 racks and machines
 
-//		int num = Integer.parseInt(file.substring(0, i));
 
 		String[] lines = file.split("\n");
 		boolean racks = true;
@@ -131,8 +130,8 @@ public class CommandConfig extends Command{
 			}
 			else try{
 				//name = data[0]; RAM = data[1]; disks = data[2]; vcpus = data[3]
-				stack.addFlavor(new Flavor(data[0], Integer.parseInt(data[1]), 
-							Integer.parseInt(data[2]), Integer.parseInt(data[3])));
+				stack.addFlavor(new Flavor(data[0], Long.parseLong(data[1]),
+							Long.parseLong(data[2]), Long.parseLong(data[3])));
 			}
 			catch(NumberFormatException ex){
 				System.err.println("Invalid data (number format) for Flavor at line "+i+": "+data[0]);

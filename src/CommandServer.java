@@ -21,7 +21,7 @@ public class CommandServer extends Command{
 			}
 			String imgName = null, flvName = null, instName = args[5];
 			for(int i = 1; i < 5; ++i){
-				String flag = args[1].toLowerCase();
+				String flag = args[i].toLowerCase();
 				if(flag.equals("--image")){
 					if(imgName != null){
 						System.err.println("Please specify only a single image");
@@ -59,6 +59,7 @@ public class CommandServer extends Command{
 			// create the machine with instName, image, & flavor
 			Instance instance = new Instance(instName, image, flavor);
 			if(stack.findHost(instance)){
+				stack.addInstance(instance);
 //				System.out.println("Located host machine for "+instName);// Just SUCCESS in log
 			}
 			else{

@@ -38,7 +38,7 @@ public class CommandShow extends Command{
 		builder.append(stack.images.size()).append('\n');
 		
 		for(Image img : stack.images.values()){
-			builder.append(img.name).append(' ').append(img.path).append('\n');
+			builder.append(img.name).append(' ').append(img.size).append("MB ").append(img.path).append('\n');
 		}
 		System.out.print(builder.toString());
 	}

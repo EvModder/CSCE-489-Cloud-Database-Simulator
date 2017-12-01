@@ -11,7 +11,7 @@ public class AggieStack{
 	protected HashMap<String, Instance> instances = new HashMap<String, Instance>();
 	protected HashMap<String, Rack> racks = new HashMap<String, Rack>();
 
-	public AggieStack(){
+	AggieStack(){
 		hook = this;
 		new CommandAdmin();
 		new CommandConfig();
@@ -77,7 +77,7 @@ public class AggieStack{
 		return racks.get(name.toLowerCase());
 	}
 
-	public boolean findHost(Instance instance){
+	boolean findHost(Instance instance){
 		for(Machine machine : machines.values()) {
 			if(machine.canHost(instance.flavor)){
 				instance.setHost(machine);

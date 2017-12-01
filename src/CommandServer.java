@@ -93,7 +93,8 @@ public class CommandServer extends Command{
 		builder.append(stack.machines.size()).append('\n');
 
 		for(Machine m : stack.machines.values()){
-			builder.append(m.name).append(' ').append(m.ip).append(' ').append(m.memory).append(' ').append(m.disks).append(' ').append(m.vcpus).append('\n');
+			builder.append(m.name).append(' ').append(m.ip).append(' ').append(m.memory).append(' ')
+						.append(m.disks).append(' ').append(m.vcpus).append('\n');
 		}
 		System.out.print(builder.toString());
 	}

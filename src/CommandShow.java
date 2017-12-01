@@ -1,4 +1,4 @@
-public class CommandShow extends Command{
+class CommandShow extends Command{
 	private AggieStack stack;
 	
 	CommandShow(){
@@ -33,6 +33,7 @@ public class CommandShow extends Command{
 		}
 		System.out.print(builder.toString());
 	}
+	
 	void showImages(){
 		StringBuilder builder = new StringBuilder(" -- Images:\n");
 		builder.append(stack.images.size()).append('\n');
@@ -42,6 +43,7 @@ public class CommandShow extends Command{
 		}
 		System.out.print(builder.toString());
 	}
+	
 	void showFlavors(){
 		StringBuilder builder = new StringBuilder(" -- Flavors:\n");
 		builder.append(stack.flavors.size()).append('\n');
@@ -52,6 +54,7 @@ public class CommandShow extends Command{
 		}
 		System.out.print(builder.toString());
 	}
+	
 	void showAll(){
 		showHardware();
 		showImages();

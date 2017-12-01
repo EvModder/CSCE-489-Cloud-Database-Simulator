@@ -1,4 +1,4 @@
-public class CommandConfig extends Command{
+class CommandConfig extends Command{
 	private AggieStack stack;
 	private IPAddressValidator ipValidator;
 	

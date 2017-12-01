@@ -1,4 +1,4 @@
-public class CommandAdmin extends Command{
+class CommandAdmin extends Command{
 	private AggieStack stack;
 	
 	CommandAdmin(){

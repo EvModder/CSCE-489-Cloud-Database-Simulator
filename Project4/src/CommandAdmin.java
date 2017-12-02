@@ -1,8 +1,9 @@
-public class CommandAdmin extends Command{
+class CommandAdmin extends Command{
 	private AggieStack stack;
 	
 	CommandAdmin(){
-		stack = AggieStack.getInstance();
+		super("admin show <hardware/instances>");
+		stack = AggieStack.getHook();
 	}
 
 	@Override public boolean runCommand(String... args){
@@ -33,6 +34,9 @@ public class CommandAdmin extends Command{
 			if(args[1].equals("hardware")){
 				showAvailableHardware();
 			}
+			else if(args[1].equals("instances")){
+				showRunningInstances();
+			}
 			else{
 				System.err.println("Invalid 'show' arguments");
 				return false;
@@ -52,6 +56,18 @@ public class CommandAdmin extends Command{
 		for(Machine m : stack.machines.values()){
 			builder.append(m.name).append(' ').append(m.ip).append(' ').append(m.memory).append(' ')
 						.append(m.disks).append(' ').append(m.vcpus).append('\n');
+		}
+		System.out.print(builder.toString());
+	}
+
+	void showRunningInstances(){
+		StringBuilder builder = new StringBuilder(" -- Instances (Running/Allocated):\n");
+		builder.append(stack.instances.size()).append('\n');
+		
+		for(Instance i : stack.instances.values()){
+			if(i.host != null){
+				builder.append(i.name).append(" is hosted on ").append(i.host.name).append('\n');
+			}
 		}
 		System.out.print(builder.toString());
 	}

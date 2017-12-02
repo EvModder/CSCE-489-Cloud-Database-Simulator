@@ -1,8 +1,9 @@
-public class CommandShow extends Command{
+class CommandShow extends Command{
 	private AggieStack stack;
 	
 	CommandShow(){
-		stack = AggieStack.getInstance();
+		super("show <hardware/images/flavors/all>");
+		stack = AggieStack.getHook();
 	}
 
 	@Override public boolean runCommand(String... args){
@@ -27,20 +28,23 @@ public class CommandShow extends Command{
 		builder.append(stack.machines.size()).append('\n');
 		
 		for(Machine m : stack.machines.values()){
-			builder.append(m.name).append(' ').append(m.ip).append(' ').append(m.TOTAL_MEMORY).append(' ')
-						.append(m.TOTAL_DISKS).append(' ').append(m.TOTAL_VCPUS).append('\n');
+			builder.append(m.name).append(' ').append(m.rack.name).append(' ').append(m.ip).append(' ')
+						.append(m.TOTAL_MEMORY).append(' ').append(m.TOTAL_DISKS).append(' ')
+						.append(m.TOTAL_VCPUS).append('\n');
 		}
 		System.out.print(builder.toString());
 	}
+	
 	void showImages(){
 		StringBuilder builder = new StringBuilder(" -- Images:\n");
 		builder.append(stack.images.size()).append('\n');
 		
-		for(Image img : stack.images){
-			builder.append(img.name).append(' ').append(img.path).append('\n');
+		for(Image img : stack.images.values()){
+			builder.append(img.name).append(' ').append(img.size).append("MB ").append(img.path).append('\n');
 		}
 		System.out.print(builder.toString());
 	}
+	
 	void showFlavors(){
 		StringBuilder builder = new StringBuilder(" -- Flavors:\n");
 		builder.append(stack.flavors.size()).append('\n');
@@ -51,6 +55,7 @@ public class CommandShow extends Command{
 		}
 		System.out.print(builder.toString());
 	}
+	
 	void showAll(){
 		showHardware();
 		showImages();

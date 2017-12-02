@@ -1,9 +1,10 @@
-public class CommandConfig extends Command{
+class CommandConfig extends Command{
 	private AggieStack stack;
 	private IPAddressValidator ipValidator;
 	
 	CommandConfig(){
-		stack = AggieStack.getInstance();
+		super("hardware <flags: --hardware, --images, --flavors>");
+		stack = AggieStack.getHook();
 		ipValidator = new IPAddressValidator();
 	}
 
@@ -35,27 +36,49 @@ public class CommandConfig extends Command{
 			return false;
 		}
 		int i = file.indexOf('\n');
-		if(i == -1) return true; //0 machines
-
-//		int num = Integer.parseInt(file.substring(0, i));
+		if(i == -1) return true; //0 racks and machines
 
 		String[] lines = file.split("\n");
+		boolean racks = true;
 		for(i=1; i<lines.length; ++i){
 			if(lines[i].isEmpty()) continue;
 			String[] data = lines[i].split(" ");
-			if(data.length != 5){
-				System.err.println("Invalid data (invalid args) for Machine #"+i);
+			if(racks){
+				if(data.length == 1){
+					racks = false;
+					continue;
+				}
+				else if(data.length != 2){
+					System.err.println("Invalid data (invalid args) for Rack at line "+i+": "
+								+(data.length > 0 ? data[0] : "null"));
+				}
+				else try{
+					//name = data[0]; storage = data[1]
+					stack.addRack(new Rack(data[0], Long.parseLong(data[1])));
+				}
+				catch(NumberFormatException ex){
+					System.err.println("Invalid data (number format) for Rack at line "+i+": "+data[0]);
+				}
 			}
-			else if(!ipValidator.validate(data[1])){
-				System.err.println("Invalid data (IP format) for Machine #"+i);
-			}
-			else try{
-				//name = data[0]; ip = data[1]; mem = data[2]; disks = data[3]; vcpus = data[4]
-				stack.addMachine(new Machine(data[0], data[1], Long.parseLong(data[2]),
-							Long.parseLong(data[3]), Long.parseLong(data[4])));
-			}
-			catch(NumberFormatException ex){
-				System.err.println("Invalid data (number format) for Machine #"+i);
+			else{
+				if(data.length != 6){
+					System.err.println("Invalid data (invalid args) for Machine at line "+i+": "
+								+(data.length > 0 ? data[0] : "null"));
+				}
+				else if(!ipValidator.validate(data[2])){
+					System.err.println("Invalid data (IP format) for Machine at line "+i+": "+data[0]);
+				}
+				else if(stack.getRack(data[1]) == null){
+					System.err.println("Invalid data (Nonexistent rack) for Machine at line "+i+": "+data[0]);
+				}
+				else try{
+					//name = data[0]; rack = data[1] ip = data[2]; mem = data[3]; disks = data[4]; vcpus = data[5]
+					stack.addMachine(new Machine(data[0], stack.getRack(data[1]), data[2],
+								Long.parseLong(data[3]), Long.parseLong(data[4]), Long.parseLong(data[5])));
+				}
+				catch(NumberFormatException ex){
+					System.err.println("Invalid data (number format) for Machine at line "+i+": "+data[0]);
+				}
 			}
 		}
 		return true;
@@ -76,12 +99,13 @@ public class CommandConfig extends Command{
 		for(i=1; i<lines.length; ++i){
 			if(lines[i].isEmpty()) continue;
 			String[] data = lines[i].split(" ");
-			if(data.length != 2){
-				System.err.println("Invalid data (invalid args) for Image #"+i);
+			if(data.length != 3){
+				System.err.println("Invalid data (invalid args) for Image at line "+i+": "
+							+(data.length > 0 ? data[0] : "null"));
 			}
 			else{
-				//name = data[0]; path = data[1];
-				stack.addImage(new Image(data[0], data[1]));
+				//name = data[0]; filesize = data[1]; path = data[2];
+				stack.addImage(new Image(data[0], Long.parseLong(data[1]), data[2]));
 			}
 		}
 		return true;
@@ -101,15 +125,16 @@ public class CommandConfig extends Command{
 			if(lines[i].isEmpty()) continue;
 			String[] data = lines[i].split(" ");
 			if(data.length != 4){
-				System.err.println("Invalid data (invalid args) for Flavor #"+i);
+				System.err.println("Invalid data (invalid args) for Flavor at line "+i+": "
+							+(data.length > 0 ? data[0] : "null"));
 			}
 			else try{
 				//name = data[0]; RAM = data[1]; disks = data[2]; vcpus = data[3]
-				stack.addFlavor(new Flavor(data[0], Integer.parseInt(data[1]), 
-							Integer.parseInt(data[2]), Integer.parseInt(data[3])));
+				stack.addFlavor(new Flavor(data[0], Long.parseLong(data[1]),
+							Long.parseLong(data[2]), Long.parseLong(data[3])));
 			}
 			catch(NumberFormatException ex){
-				System.err.println("Invalid data (number format) for Flavor #"+i);
+				System.err.println("Invalid data (number format) for Flavor at line "+i+": "+data[0]);
 			}
 		}
 		return true;

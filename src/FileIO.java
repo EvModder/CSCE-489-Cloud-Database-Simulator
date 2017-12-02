@@ -11,6 +11,8 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FileIO{
 	public static final String DIR = "./";
@@ -133,6 +135,63 @@ public class FileIO{
 		}
 		catch(IOException ex){ex.printStackTrace();}
 		return "";
+	}
+	
+	private static Map<String,String> loadYamlish(File file){
+		HashMap<String,String> map = new HashMap<String,String>();
+		BufferedReader reader = null;
+		try{reader = new BufferedReader(new FileReader(file));}
+		catch(FileNotFoundException e){return map;}
+		if(reader != null){
+			try{
+				String line;
+				
+				while((line = reader.readLine()) != null){
+					line = line.replace("//", "#").replace(":", "=").trim();
+					int idx = line.indexOf('#');
+					if(idx >= 0) line = line.substring(0,idx);
+					if(line.contains("=")){
+						String[] keyval = line.split("=");
+						map.put(keyval[0].trim().toLowerCase(), keyval[1].trim().replaceAll("\"$|^\"", ""));
+					}
+				}
+				reader.close();
+			}catch(IOException e){}
+		}
+		return map;
+	}
+
+	public static Map<String,String> loadYaml(String configName, InputStream defaultConfig){
+		File file = new File(DIR+configName);
+		if(!file.exists() && defaultConfig != null){
+			try{
+				//Create Directory
+				File dir = new File(DIR);
+				if(!dir.exists())dir.mkdir();
+				
+				//Create config file from default
+				BufferedReader reader = new BufferedReader(new InputStreamReader(defaultConfig));
+				
+				String line = reader.readLine();
+				StringBuilder builder = new StringBuilder(line);
+				
+				while((line = reader.readLine()) != null){
+					builder.append('\n');
+					builder.append(line);
+				}
+				reader.close();
+				
+				BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+				writer.write(builder.toString()); writer.close();
+			}
+			catch(IOException ex){
+				ex.printStackTrace();
+				System.err.println("Unable to locate a default config!");
+			}
+			System.out.println("Could not locate configuration file!");
+			System.out.println("Generating a new one with default settings.");
+		}
+		return loadYamlish(file);
 	}
 	
 	public static boolean appendString(String filename, String content){

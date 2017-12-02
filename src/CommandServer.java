@@ -1,4 +1,4 @@
-public class CommandServer extends Command{
+class CommandServer extends Command{
 	private AggieStack stack;
 
 	CommandServer(){

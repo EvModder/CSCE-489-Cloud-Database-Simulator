@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class AggieStack{
 	public static void main(String... args){new AggieStack();}
@@ -14,42 +13,17 @@ public class AggieStack{
 
 	AggieStack(){
 		hook = this;
+		// Register commands
 		new CommandAdmin();
 		new CommandConfig();
 		new CommandHelp();
 		new CommandServer();
 		new CommandShow();
-		Scanner scanner = new Scanner(System.in);
 		
-		System.out.print(PS1);
-		while(scanner.hasNextLine()){
-			String input = scanner.nextLine();
-			if(input.toLowerCase().startsWith("aggiestack ")){
-				input = input.substring(11);
-			}
-			if(input.equals("exit") || input.equals("quit")) break;
-			
-			int i = input.indexOf(" ");
-			String cmdName = i == -1 ? input : input.substring(0, i);
-			String[] args = i == -1 ? new String[]{} : input.substring(i+1).split(" ");
-
-			Command cmd = Command.getCommand(cmdName);
-			if(cmd != null){
-				boolean result = cmd.runCommand(args);
-				
-				String log = cmdName+" >> "+(result ? "SUCCESS" : "FAILURE")+'\n';
-				FileIO.appendString("aggiestack-log.txt", log);
-			}
-			else if(!cmdName.isEmpty()){
-				String log = cmdName+" >> INVALID\n";
-				FileIO.appendString("aggiestack-log.txt", log);
-				System.err.println("Invalid command");
-			}
-			System.out.print(PS1);
-		}
-		scanner.close();
+		// Run AggieStack console (command input loop)
+		Command.inputLoop();
 	}
-	
+
 	void addMachine(Machine machine){
 		machines.put(machine.name.toLowerCase(), machine);
 	}

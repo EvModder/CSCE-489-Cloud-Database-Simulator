@@ -3,6 +3,7 @@ class CommandConfig extends Command{
 	private IPAddressValidator ipValidator;
 	
 	CommandConfig(){
+		super("hardware <flags: --hardware, --images, --flavors>");
 		stack = AggieStack.getHook();
 		ipValidator = new IPAddressValidator();
 	}
@@ -36,7 +37,6 @@ class CommandConfig extends Command{
 		}
 		int i = file.indexOf('\n');
 		if(i == -1) return true; //0 racks and machines
-
 
 		String[] lines = file.split("\n");
 		boolean racks = true;

@@ -2,6 +2,7 @@ public class CommandServer extends Command{
 	private AggieStack stack;
 
 	CommandServer(){
+		super("server <create/delete/list> <flags: --image, --flavor>");
 		stack = AggieStack.getHook();
 	}
 
@@ -56,11 +57,12 @@ public class CommandServer extends Command{
 				System.err.println("Invalid flavor specified: "+flvName);
 				return false;
 			}
-			// create the machine with instName, image, & flavor
+			// Create the machine with instName, image, & flavor
 			Instance instance = new Instance(instName, image, flavor);
 			if(stack.findHost(instance)){
 				stack.addInstance(instance);
 //				System.out.println("Located host machine for "+instName);// Just SUCCESS in log
+				//At this point, in a real cloud, call a hypervisor command creating the instance
 			}
 			else{
 				System.err.println("Unable to find a host for the specified instance");

@@ -1,14 +1,22 @@
 import java.util.HashMap;
 
 public abstract class Command{
-	String name;
-	private static HashMap<String, Command> cmds = new HashMap<String, Command>();
+	String name, usage;
+	static HashMap<String, Command> cmds = new HashMap<String, Command>();
 	
-	Command(String name){
+	Command(String name, String usage){
+		this.name = name;
+		this.usage = usage;
+		cmds.put(name.toLowerCase(), this);
+	}
+	Command(String usage){
+		name = getClass().getSimpleName().substring(7).toLowerCase();
+		this.usage = usage;
 		cmds.put(name.toLowerCase(), this);
 	}
 	Command(){
-		String name = getClass().getSimpleName().substring(7).toLowerCase();
+		name = getClass().getSimpleName().substring(7).toLowerCase();
+		usage = name;
 		cmds.put(name.toLowerCase(), this);
 	}
 	

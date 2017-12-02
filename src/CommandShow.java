@@ -2,6 +2,7 @@ class CommandShow extends Command{
 	private AggieStack stack;
 	
 	CommandShow(){
+		super("show <hardware/images/flavors/all>");
 		stack = AggieStack.getHook();
 	}
 

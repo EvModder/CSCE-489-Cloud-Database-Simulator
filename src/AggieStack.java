@@ -10,16 +10,19 @@ public class AggieStack{
 	protected HashMap<String, Flavor> flavors = new HashMap<String, Flavor>();
 	protected HashMap<String, Instance> instances = new HashMap<String, Instance>();
 	protected HashMap<String, Rack> racks = new HashMap<String, Rack>();
+	final String PS1 = System.getProperty("user.name")+"@aggiestack $ ";
 
 	AggieStack(){
 		hook = this;
 		new CommandAdmin();
 		new CommandConfig();
+		new CommandHelp();
 		new CommandServer();
 		new CommandShow();
 		Scanner scanner = new Scanner(System.in);
-
-		while(scanner.hasNext()){
+		
+		System.out.print(PS1);
+		while(scanner.hasNextLine()){
 			String input = scanner.nextLine();
 			if(input.toLowerCase().startsWith("aggiestack ")){
 				input = input.substring(11);
@@ -37,11 +40,12 @@ public class AggieStack{
 				String log = cmdName+" >> "+(result ? "SUCCESS" : "FAILURE")+'\n';
 				FileIO.appendString("aggiestack-log.txt", log);
 			}
-			else{
+			else if(!cmdName.isEmpty()){
 				String log = cmdName+" >> INVALID\n";
 				FileIO.appendString("aggiestack-log.txt", log);
 				System.err.println("Invalid command");
 			}
+			System.out.print(PS1);
 		}
 		scanner.close();
 	}
@@ -78,7 +82,7 @@ public class AggieStack{
 	}
 
 	boolean findHost(Instance instance){
-		for(Machine machine : machines.values()) {
+		for(Machine machine : machines.values()){
 			if(machine.canHost(instance.flavor)){
 				instance.setHost(machine);
 				return true;

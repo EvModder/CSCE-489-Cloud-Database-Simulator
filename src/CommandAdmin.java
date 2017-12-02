@@ -2,6 +2,7 @@ class CommandAdmin extends Command{
 	private AggieStack stack;
 	
 	CommandAdmin(){
+		super("admin show <hardware/instances>");
 		stack = AggieStack.getHook();
 	}
 

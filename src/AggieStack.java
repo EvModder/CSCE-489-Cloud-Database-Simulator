@@ -26,6 +26,7 @@ public class AggieStack{
 
 	void addMachine(Machine machine){
 		machines.put(machine.name.toLowerCase(), machine);
+		racks.get(machine.rack.name).machines.add(machine);
 	}
 	Machine getMachine(String name){
 		return machines.get(name.toLowerCase());

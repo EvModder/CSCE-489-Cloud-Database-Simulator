@@ -57,6 +57,10 @@ class CommandServer extends Command{
 				System.err.println("Invalid flavor specified: "+flvName);
 				return false;
 			}
+			if(stack.getInstance(instName) != null){
+				System.err.println("An instance with than name already exists");
+				return false;
+			}
 			// Create the machine with instName, image, & flavor
 			Instance instance = new Instance(instName, image, flavor);
 			if(stack.findHost(instance)){

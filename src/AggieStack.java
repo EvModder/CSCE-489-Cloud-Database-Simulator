@@ -65,4 +65,18 @@ public class AggieStack{
 		}
 		return false;
 	}
+
+	long evacuate(Rack rack){
+		rack.enabled = false;
+		long unableToRelocate = 0;
+		
+		for(Machine machine : rack.machines){// For each machine in the rack
+			for(Instance instance : machine.instances){// For each instance on the machine
+				// Attempt to relocate instance; if there is no space for this instance,
+				// set 'success' to false, but continue trying to move other instances
+				if(!findHost(instance)) ++unableToRelocate;
+			}
+		}
+		return unableToRelocate;
+	}
 }

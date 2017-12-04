@@ -5,6 +5,7 @@ public class Rack{
 	long storage;
 	final long TOTAL_CAPACITY;
 	Vector<Machine> machines;
+	boolean enabled = true;
 
 	Rack(String name, long storage){
 		this.name = name;

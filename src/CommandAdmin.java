@@ -42,6 +42,24 @@ class CommandAdmin extends Command{
 				return false;
 			}
 		}
+		else if(args[0].equals("evacuate")){
+			Rack rack = stack.getRack(args[1]);
+			if(rack == null){
+				System.err.println("Rack not found: "+args[1]);
+				return false;
+			}
+			long stuck = stack.evacuate(rack);
+			
+			if(stuck != 0){
+				System.err.println("Evacuation of "+rack.name+" failed!");
+				System.err.println("Unable to relocate "+stuck+" instances");
+				return false;
+			}
+			else{
+				// Success is printed in log file, so we don't need to print here
+//				System.out.println("Evacuated all virtual instances from rack: "+rack.name);
+			}
+		}
 		else{
 			System.err.println("Invalid arguments");
 			return false;

@@ -1,0 +1,9 @@
+config >> SUCCESS
+show >> SUCCESS
+config >> SUCCESS
+show >> SUCCESS
+config >> SUCCESS
+server >> SUCCESS
+admin >> SUCCESS
+config >> SUCCESS
+adsfasdf >> INVALID

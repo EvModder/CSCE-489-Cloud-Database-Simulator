@@ -80,7 +80,7 @@ class CommandServer extends Command{
 			}
 			Instance instance = stack.instances.remove(args[1]);
 			if(instance == null){
-				System.err.println("No such instance found: "+args[1]);
+				System.err.println("Instance not found: "+args[1]);
 				return false;
 			}
 			// Free resources from current host

@@ -18,6 +18,6 @@ public class Machine{
 	}
 
 	public boolean canHost(Flavor flavor){
-		return memory >= flavor.ram && disks >= flavor.disks && vcpus >= flavor.vcpus;
+		return rack.enabled && memory >= flavor.ram && disks >= flavor.disks && vcpus >= flavor.vcpus;
 	}
 }

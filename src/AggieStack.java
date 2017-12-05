@@ -28,6 +28,13 @@ public class AggieStack{
 		machines.put(machine.name.toLowerCase(), machine);
 		racks.get(machine.rack.name).machines.add(machine);
 	}
+	Machine removeMachine(String name){
+		Machine machine = getMachine(name);
+		if(machine != null && machine.rack != null){
+			racks.get(machine.rack.name).machines.remove(machine);
+		}
+		return machine;
+	}
 	Machine getMachine(String name){
 		return machines.get(name.toLowerCase());
 	}
@@ -57,25 +64,37 @@ public class AggieStack{
 	}
 
 	boolean findHost(Instance instance){
-		for(Machine machine : machines.values()){
-			if(machine.canHost(instance.flavor)){
-				instance.setHost(machine);
-				return true;
+		for(Rack rack : racks.values()){
+			if(rack.enabled){
+				for(Machine machine : rack.machines){
+					if(machine.canHost(instance.flavor)){
+						instance.setHost(machine);
+						return true;
+					}
+				}
 			}
 		}
 		return false;
+	}
+	
+	long evacuate(Machine machine){
+		long unableToRelocate = 0;
+		
+		for(Instance instance : machine.instances){
+			// Attempt to relocate instance; if there is no space for this instance,
+			// set 'success' to false, but continue trying to move other instances
+			if(!findHost(instance)) ++unableToRelocate;
+		}
+		return unableToRelocate;
 	}
 
 	long evacuate(Rack rack){
 		rack.enabled = false;
 		long unableToRelocate = 0;
 		
-		for(Machine machine : rack.machines){// For each machine in the rack
-			for(Instance instance : machine.instances){// For each instance on the machine
-				// Attempt to relocate instance; if there is no space for this instance,
-				// set 'success' to false, but continue trying to move other instances
-				if(!findHost(instance)) ++unableToRelocate;
-			}
+		// For each machine in the rack
+		for(Machine machine : rack.machines){
+			unableToRelocate += evacuate(machine);
 		}
 		return unableToRelocate;
 	}

@@ -14,6 +14,7 @@ public class Instance{
 	public void setHost(Machine newHost){
 		// Free space on old host (if exists)
 		if(host != null){
+			host.instances.remove(this);
 			host.memory += flavor.ram;
 			host.disks += flavor.disks;
 			host.vcpus += flavor.vcpus;
@@ -21,6 +22,7 @@ public class Instance{
 
 		// Claim space on new host (if exists)
 		if(newHost != null){
+			newHost.instances.add(this);
 			newHost.memory -= flavor.ram;
 			newHost.disks -= flavor.disks;
 			newHost.vcpus -= flavor.vcpus;

@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class AggieStack{
 	public static void main(String... args){new AggieStack();}
@@ -14,44 +13,27 @@ public class AggieStack{
 
 	AggieStack(){
 		hook = this;
+		// Register commands
 		new CommandAdmin();
 		new CommandConfig();
 		new CommandHelp();
 		new CommandServer();
 		new CommandShow();
-		Scanner scanner = new Scanner(System.in);
 		
-		System.out.print(PS1);
-		while(scanner.hasNextLine()){
-			String input = scanner.nextLine();
-			if(input.toLowerCase().startsWith("aggiestack ")){
-				input = input.substring(11);
-			}
-			if(input.equals("exit") || input.equals("quit")) break;
-			
-			int i = input.indexOf(" ");
-			String cmdName = i == -1 ? input : input.substring(0, i);
-			String[] args = i == -1 ? new String[]{} : input.substring(i+1).split(" ");
-
-			Command cmd = Command.getCommand(cmdName);
-			if(cmd != null){
-				boolean result = cmd.runCommand(args);
-				
-				String log = cmdName+" >> "+(result ? "SUCCESS" : "FAILURE")+'\n';
-				FileIO.appendString("aggiestack-log.txt", log);
-			}
-			else if(!cmdName.isEmpty()){
-				String log = cmdName+" >> INVALID\n";
-				FileIO.appendString("aggiestack-log.txt", log);
-				System.err.println("Invalid command");
-			}
-			System.out.print(PS1);
-		}
-		scanner.close();
+		// Run AggieStack console (command input loop)
+		Command.inputLoop();
 	}
-	
+
 	void addMachine(Machine machine){
 		machines.put(machine.name.toLowerCase(), machine);
+		racks.get(machine.rack.name).machines.add(machine);
+	}
+	Machine removeMachine(String name){
+		Machine machine = getMachine(name);
+		if(machine != null && machine.rack != null){
+			racks.get(machine.rack.name).machines.remove(machine);
+		}
+		return machine;
 	}
 	Machine getMachine(String name){
 		return machines.get(name.toLowerCase());
@@ -82,12 +64,38 @@ public class AggieStack{
 	}
 
 	boolean findHost(Instance instance){
-		for(Machine machine : machines.values()){
-			if(machine.canHost(instance.flavor)){
-				instance.setHost(machine);
-				return true;
+		for(Rack rack : racks.values()){
+			if(rack.enabled){
+				for(Machine machine : rack.machines){
+					if(machine.canHost(instance.flavor)){
+						instance.setHost(machine);
+						return true;
+					}
+				}
 			}
 		}
 		return false;
+	}
+	
+	long evacuate(Machine machine){
+		long unableToRelocate = 0;
+		
+		for(Instance instance : machine.instances){
+			// Attempt to relocate instance; if there is no space for this instance,
+			// set 'success' to false, but continue trying to move other instances
+			if(!findHost(instance)) ++unableToRelocate;
+		}
+		return unableToRelocate;
+	}
+
+	long evacuate(Rack rack){
+		rack.enabled = false;
+		long unableToRelocate = 0;
+		
+		// For each machine in the rack
+		for(Machine machine : rack.machines){
+			unableToRelocate += evacuate(machine);
+		}
+		return unableToRelocate;
 	}
 }

@@ -53,8 +53,11 @@ class CommandConfig extends Command{
 								+(data.length > 0 ? data[0] : "null"));
 				}
 				else try{
-					//name = data[0]; storage = data[1]
-					stack.addRack(new Rack(data[0], Long.parseLong(data[1])));
+					long storage = Long.parseLong(data[1]);
+					if(storage < 0){
+						System.err.println("Invalid data (number format)  for Rack at line "+i+": "+data[0]);
+					}
+					else stack.addRack(new Rack(data[0], storage));
 				}
 				catch(NumberFormatException ex){
 					System.err.println("Invalid data (number format) for Rack at line "+i+": "+data[0]);
@@ -76,8 +79,13 @@ class CommandConfig extends Command{
 				}
 				else try{
 					//name = data[0]; rack = data[1] ip = data[2]; mem = data[3]; disks = data[4]; vcpus = data[5]
-					stack.addMachine(new Machine(data[0], stack.getRack(data[1]), data[2],
-								Long.parseLong(data[3]), Long.parseLong(data[4]), Long.parseLong(data[5])));
+					Machine machine = new Machine(data[0], stack.getRack(data[1]), data[2],
+								Long.parseLong(data[3]), Long.parseLong(data[4]), Long.parseLong(data[5]));
+					
+					if(machine.memory < 0 || machine.disks < 0 || machine.vcpus < 0){
+						System.err.println("Invalid data (number format) for Machine at line "+i+": "+data[0]);
+					}
+					else stack.addMachine(machine);
 				}
 				catch(NumberFormatException ex){
 					System.err.println("Invalid data (number format) for Machine at line "+i+": "+data[0]);

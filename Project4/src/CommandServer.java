@@ -1,4 +1,4 @@
-public class CommandServer extends Command{
+class CommandServer extends Command{
 	private AggieStack stack;
 
 	CommandServer(){
@@ -57,6 +57,10 @@ public class CommandServer extends Command{
 				System.err.println("Invalid flavor specified: "+flvName);
 				return false;
 			}
+			if(stack.getInstance(instName) != null){
+				System.err.println("An instance with than name already exists");
+				return false;
+			}
 			// Create the machine with instName, image, & flavor
 			Instance instance = new Instance(instName, image, flavor);
 			if(stack.findHost(instance)){
@@ -76,7 +80,7 @@ public class CommandServer extends Command{
 			}
 			Instance instance = stack.instances.remove(args[1]);
 			if(instance == null){
-				System.err.println("No such instance found: "+args[1]);
+				System.err.println("Instance not found: "+args[1]);
 				return false;
 			}
 			// Free resources from current host

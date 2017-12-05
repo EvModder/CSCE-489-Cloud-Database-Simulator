@@ -3,7 +3,7 @@ class CommandAdmin extends Command{
 	private IPAddressValidator ipValidator;
 	
 	CommandAdmin(){
-		super("admin show <hardware/instances/evacuate/remove/add>");
+		super("admin show <hardware/instances/evacuate/unevacuate/remove/add>");
 		stack = AggieStack.getHook();
 		ipValidator = new IPAddressValidator();
 	}
@@ -62,6 +62,14 @@ class CommandAdmin extends Command{
 //				System.out.println("Evacuated all virtual instances from rack: "+rack.name);
 			}
 		}
+		else if(args[0].equals("unevacuate")) {
+			Rack rack = stack.getRack(args[1]);
+			if(rack == null){
+				System.err.println("Rack not found: "+args[1]);
+				return false;
+			}
+			rack.enabled = true;
+		}
 		else if(args[0].equals("remove")){
 			Machine machine = stack.removeMachine(args[1]);
 			if(machine == null){
@@ -99,6 +107,10 @@ class CommandAdmin extends Command{
 						System.err.println("Invalid data (number format) for 'mem' flag: "+args[i]);
 						return false;
 					}
+					if(memory < 0){
+						System.err.println("Invalid data (number format) for 'mem' flag: "+args[i]);
+						return false;
+					}
 				}
 				else if(flag.equals("-disk")){
 					if(disks != -1){
@@ -110,6 +122,10 @@ class CommandAdmin extends Command{
 						System.err.println("Invalid data (number format) for 'disk' flag: "+args[i]);
 						return false;
 					}
+					if(disks < 0){
+						System.err.println("Invalid data (number format) for 'mem' disks: "+args[i]);
+						return false;
+					}
 				}
 				else if(flag.equals("-vcpu")){
 					if(vcpus != -1){
@@ -118,6 +134,10 @@ class CommandAdmin extends Command{
 					}
 					try{vcpus = Long.parseLong(args[++i]);}
 					catch(NumberFormatException ex){
+						System.err.println("Invalid data (number format) for 'vcpus' flag: "+args[i]);
+						return false;
+					}
+					if(vcpus < 0){
 						System.err.println("Invalid data (number format) for 'vcpus' flag: "+args[i]);
 						return false;
 					}

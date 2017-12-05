@@ -71,6 +71,9 @@ class CommandConfig extends Command{
 				else if(stack.getRack(data[1]) == null){
 					System.err.println("Invalid data (Nonexistent rack) for Machine at line "+i+": "+data[0]);
 				}
+				else if(stack.getMachine(data[0]) != null) {
+					System.err.println("Invalid data (Duplicate name) for Machine at line "+i+": "+data[0]);
+				}
 				else try{
 					//name = data[0]; rack = data[1] ip = data[2]; mem = data[3]; disks = data[4]; vcpus = data[5]
 					stack.addMachine(new Machine(data[0], stack.getRack(data[1]), data[2],

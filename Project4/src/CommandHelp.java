@@ -3,7 +3,7 @@ class CommandHelp extends Command{
 		if(args.length == 1){
 			Command cmd = Command.getCommand(args[0]);
 			if(cmd != null) {
-				System.out.println("Usage for "+cmd.name+"\t: "+cmd.usage);
+				System.out.println("Usage for "+cmd.name+" : "+cmd.usage);
 			}
 		}
 		else{

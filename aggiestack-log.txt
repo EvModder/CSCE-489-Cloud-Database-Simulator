@@ -97,3 +97,15 @@ server >> SUCCESS
 admin >> SUCCESS
 admin >> SUCCESS
 admin >> SUCCESS
+config >> SUCCESS
+show >> SUCCESS
+config >> SUCCESS
+show >> SUCCESS
+config >> SUCCESS
+show >> SUCCESS
+server >> SUCCESS
+server >> SUCCESS
+admin >> SUCCESS
+admin >> SUCCESS
+admin >> SUCCESS
+admin >> SUCCESS

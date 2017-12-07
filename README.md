@@ -14,6 +14,7 @@ This project emulates a shell that controls a cluster in a cloud network.  I sta
 
 ## Compiling and Executing
 Since the program is written in standard Java, to compile the program simply navigate to the src/ directory and type:
-`javac Aggiestack.java`
+* `javac Aggiestack.java`
+
 Likewise, to execute the program simply enter the following command from the same directory:
-`java AggieStack`
+* `java AggieStack`

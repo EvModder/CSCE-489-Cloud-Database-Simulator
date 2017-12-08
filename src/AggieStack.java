@@ -64,7 +64,7 @@ public class AggieStack{
 	}
 
 	boolean findHost(Instance instance){
-		for(Rack rack : racks.values()){
+		for(Rack rack : racks.values()){//TODO: Does this rack have a copy of the image?
 			if(rack.enabled){
 				for(Machine machine : rack.machines){
 					if(machine.canHost(instance.flavor)){

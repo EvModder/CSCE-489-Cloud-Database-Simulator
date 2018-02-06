@@ -1,15 +1,22 @@
 import java.util.HashMap;
 
 public class AggieStack{
-	public static void main(String... args){new AggieStack();}
+	public static void main(String... args){
+		new AggieStack();
+	}
+
 	private static AggieStack hook;
-	public static AggieStack getHook(){return hook;}
+
+	public static AggieStack getHook(){
+		return hook;
+	}
+
 	protected HashMap<String, Machine> machines = new HashMap<String, Machine>();
 	protected HashMap<String, Image> images = new HashMap<String, Image>();
 	protected HashMap<String, Flavor> flavors = new HashMap<String, Flavor>();
 	protected HashMap<String, Instance> instances = new HashMap<String, Instance>();
 	protected HashMap<String, Rack> racks = new HashMap<String, Rack>();
-	final String PS1 = System.getProperty("user.name")+"@aggiestack $ ";
+	final String PS1 = System.getProperty("user.name") + "@aggiestack $ ";
 
 	AggieStack(){
 		hook = this;
@@ -19,7 +26,7 @@ public class AggieStack{
 		new CommandHelp();
 		new CommandServer();
 		new CommandShow();
-		
+
 		// Run AggieStack console (command input loop)
 		Command.inputLoop();
 	}
@@ -30,7 +37,7 @@ public class AggieStack{
 	}
 	Machine removeMachine(String name){
 		Machine machine = getMachine(name);
-		if(machine != null && machine.rack != null){
+		if(machine != null && machine.rack != null) {
 			racks.get(machine.rack.name).machines.remove(machine);
 		}
 		return machine;
@@ -64,10 +71,11 @@ public class AggieStack{
 	}
 
 	boolean findHost(Instance instance){
-		for(Rack rack : racks.values()){//TODO: Does this rack have a copy of the image?
-			if(rack.enabled){
+		for(Rack rack : racks.values()){// TODO: Does this rack have a copy of
+										// the image?
+			if(rack.enabled) {
 				for(Machine machine : rack.machines){
-					if(machine.canHost(instance.flavor)){
+					if(machine.canHost(instance.flavor)) {
 						instance.setHost(machine);
 						return true;
 					}
@@ -76,13 +84,15 @@ public class AggieStack{
 		}
 		return false;
 	}
-	
+
 	long evacuate(Machine machine){
 		long unableToRelocate = 0;
-		
+
 		for(Instance instance : machine.instances){
-			// Attempt to relocate instance; if there is no space for this instance,
-			// set 'success' to false, but continue trying to move other instances
+			// Attempt to relocate instance; if there is no space for this
+			// instance,
+			// set 'success' to false, but continue trying to move other
+			// instances
 			if(!findHost(instance)) ++unableToRelocate;
 		}
 		return unableToRelocate;
@@ -91,7 +101,7 @@ public class AggieStack{
 	long evacuate(Rack rack){
 		rack.enabled = false;
 		long unableToRelocate = 0;
-		
+
 		// For each machine in the rack
 		for(Machine machine : rack.machines){
 			unableToRelocate += evacuate(machine);
